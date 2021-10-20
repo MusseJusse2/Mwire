@@ -797,6 +797,8 @@ public class Settings {
         editor.commit();
     }
 
+    //CLEAN
+
     private final String PREFIX = "json";
 
     public void saveJSONArray(String key, JSONArray array) {
