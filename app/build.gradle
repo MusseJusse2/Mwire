@@ -1,0 +1,102 @@
+apply plugin: "com.android.application"
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "30.0.3"
+    ndkVersion "22.1.7171670"
+
+    defaultConfig {
+        applicationId "com.perflyst.twire"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 523
+        versionName "2.9.3"
+
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "app_name", "Twire"
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-DEBUG"
+            resValue "string", "app_name", "Twire Debug"
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    compileOptions {
+        encoding "UTF-8"
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    //AndroidX
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "androidx.browser:browser:1.3.0"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.multidex:multidex:2.0.1"
+    implementation "androidx.palette:palette:1.0.0"
+    implementation "androidx.preference:preference:1.1.1"
+    implementation "androidx.recyclerview:recyclerview:1.2.0"
+    implementation "androidx.transition:transition:1.4.1"
+    //  https://developer.android.com/jetpack/androidx/releases/recyclerview#recyclerview-1.2.0-alpha02
+    implementation "androidx.viewpager2:viewpager2:1.1.0-alpha01"
+    implementation "com.google.android.material:material:1.3.0"
+
+    //https://github.com/bumptech/glide/releases
+    def glideVersion = "4.12.0"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
+    //https://github.com/balysv/material-ripple/blob/master/CHANGELOG.md
+    implementation "com.balysv:material-ripple:1.0.2"
+
+    //https://github.com/rey5137/material/releases
+    implementation "com.github.rey5137:material:1.3.1"
+
+    //https://github.com/Perflyst/SRJNeeds
+    implementation "com.github.perflyst:srjneeds:85306c8"
+
+    //https://github.com/StephenVinouze/MaterialNumberPicker/releases
+    implementation "com.github.StephenVinouze:MaterialNumberPicker:1.1.0"
+
+    //https://github.com/google/gson/blob/master/CHANGELOG.md
+    implementation "com.google.code.gson:gson:2.8.7"
+
+    //https://github.com/JakeWharton/butterknife/blob/master/CHANGELOG.md
+    implementation "com.jakewharton:butterknife:10.2.3"
+    annotationProcessor "com.jakewharton:butterknife-compiler:10.2.3"
+
+    //https://github.com/ozodrukh/CircularReveal/releases
+    implementation("com.github.ozodrukh:CircularReveal:1.3.1@aar") { transitive = true }
+
+    //https://github.com/afollestad/material-dialogs/releases?after=2.0.0-alpha01
+    implementation "com.github.afollestad.material-dialogs:core:0.8.6.2@aar"
+    implementation "com.github.afollestad.material-dialogs:commons:0.8.6.2@aar"
+
+    //https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md
+    def exoPlayer = "2.14.0"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoPlayer"
+    implementation "com.google.android.exoplayer:exoplayer-hls:$exoPlayer"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoPlayer"
+    implementation "com.google.android.exoplayer:extension-mediasession:$exoPlayer"
+
+    //https://github.com/google/conscrypt/releases
+    implementation "org.conscrypt:conscrypt-android:2.5.2"
+
+    //https://github.com/square/okhttp
+    implementation "com.squareup.okhttp3:okhttp:3.12.13"
+}
