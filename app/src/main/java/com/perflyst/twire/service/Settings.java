@@ -797,7 +797,9 @@ public class Settings {
         editor.commit();
     }
 
-    private static final String PREFIX = "json";
+    //CLEAN
+
+    private final String PREFIX = "json";
 
     public void saveJSONArray(String key, JSONArray array) {
         SharedPreferences settings = getPreferences();
@@ -818,13 +820,6 @@ public class Settings {
     public JSONArray loadJSONArray(String key) throws JSONException {
         SharedPreferences settings = getPreferences();
         return new JSONArray(settings.getString(PREFIX+key, "[]"));
-    }
-
-    public void remove(String prefName, String key) {
-        SharedPreferences settings = getPreferences();
-        SharedPreferences.Editor editor = settings.edit();
-        editor.remove(PREFIX+key);
-        editor.commit();
     }
 
     public Context getContext() {
