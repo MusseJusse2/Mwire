@@ -1676,8 +1676,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
                             list.add( test.getString(j) );
                         }
 
-                        //SET UP FOR USER IDS INSTEAD OF DISPLAYNAMES
-
                         list.remove(i);
                         String[] test2 = list.stream().toArray(String[]::new);
 
