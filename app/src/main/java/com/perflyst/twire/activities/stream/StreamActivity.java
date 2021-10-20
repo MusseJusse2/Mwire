@@ -298,7 +298,7 @@ public abstract class StreamActivity extends ThemeActivity implements SensorEven
     void updateOrientation() {
         boolean landscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
-        View chat = findViewById(R.id.chat_fragment);
+        /*View chat = findViewById(R.id.chat_fragment);
         if (landscape) {
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) findViewById(R.id.chat_landscape_fragment).getLayoutParams();
             lp.width = (int) (StreamFragment.getScreenRect(this).height() * (settings.getChatLandscapeWidth() / 100.0));
@@ -306,7 +306,7 @@ public abstract class StreamActivity extends ThemeActivity implements SensorEven
             chat.setLayoutParams(lp);
         } else {
             chat.setLayoutParams(findViewById(R.id.chat_placement_wrapper).getLayoutParams());
-        }
+        }*/
 
         ViewGroup.LayoutParams layoutParams = findViewById(getVideoContainerResource()).getLayoutParams();
         layoutParams.height = landscape ? MATCH_PARENT : WRAP_CONTENT;
