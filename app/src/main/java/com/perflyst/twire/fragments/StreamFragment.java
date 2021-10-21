@@ -1661,7 +1661,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
     private void setupFollowButton(final ImageView imageView) {
 
-        updateFollowIcon(imageView, true);
+        updateFollowIcon(imageView, false);
 
         imageView.setOnClickListener(view -> {
             try {
@@ -1690,7 +1690,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
                     Log.d("testing", "added " + mChannelInfo.getDisplayName());
                 }
-                updateFollowIcon(imageView, favourite2);
+                updateFollowIcon(imageView, !favourite2);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
