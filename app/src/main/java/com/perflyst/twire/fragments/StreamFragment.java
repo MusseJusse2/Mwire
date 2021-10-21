@@ -162,9 +162,8 @@ public class StreamFragment extends Fragment implements Player.Listener {
     private Snackbar snackbar;
     private ProgressView mBufferingView;
     private BottomSheetDialog mQualityBottomSheet, mProfileBottomSheet;
-    private CheckedTextView mAudioOnlySelector, mChatOnlySelector;
+    private CheckedTextView mAudioOnlySelector;
     private ViewGroup rootView;
-    private MenuItem optionsMenuItem;
     private LinearLayout mQualityWrapper;
     private View mClickInterceptor;
     private final Runnable hideAnimationRunnable = () -> {
@@ -220,8 +219,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
     private int originalCtrlToolbarPadding,
             originalMainToolbarPadding,
             vodLength = 0,
-            currentProgress = 0,
-            videoHeightBeforeChatOnly;
+            currentProgress = 0;
     private Integer triesForNextBest = 0;
     private boolean pictureInPictureEnabled; // Tracks if PIP is enabled including the animation.
     private MediaSessionCompat mediaSession;
@@ -907,7 +905,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        optionsMenuItem = menu.findItem(R.id.menu_item_options);
+        MenuItem optionsMenuItem = menu.findItem(R.id.menu_item_options);
         optionsMenuItem.setVisible(false);
         optionsMenuItem.setOnMenuItemClickListener(menuItem -> {
             if (mQualityButton != null) {
@@ -1789,10 +1787,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
         // resume the stream
         resumeStream();
-    }
-
-    private void stopAudioOnlyNoServiceCall() {
-        disableAudioOnlyView();
     }
 
     public void prePictureInPicture() {
