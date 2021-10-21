@@ -71,10 +71,6 @@ public class FeaturedStreamsActivity extends LazyMainActivity<StreamInfo> {
 
         if (streams.length() > 0) {
 
-            //THIS IS A TEST
-            //JOE IS A CUNT
-            //WHATEVER
-
             for (int i = 0; i < streams.length(); i++) {
                 try {
                     JSONObject topObject = new JSONObject(Service.urlToJSONString(BASE_URL + streams.get(i)));
