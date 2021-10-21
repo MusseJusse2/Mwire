@@ -16,9 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.transition.Transition;
 import android.util.DisplayMetrics;
@@ -86,7 +84,6 @@ import com.perflyst.twire.activities.ChannelActivity;
 import com.perflyst.twire.activities.stream.StreamActivity;
 import com.perflyst.twire.adapters.PanelAdapter;
 import com.perflyst.twire.chat.ChatManager;
-import com.perflyst.twire.misc.FollowHandler;
 import com.perflyst.twire.misc.ResizeHeightAnimation;
 import com.perflyst.twire.misc.ResizeWidthAnimation;
 import com.perflyst.twire.model.ChannelInfo;
@@ -105,7 +102,6 @@ import com.rey.material.widget.ProgressView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,8 +112,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class StreamFragment extends Fragment implements Player.Listener {
