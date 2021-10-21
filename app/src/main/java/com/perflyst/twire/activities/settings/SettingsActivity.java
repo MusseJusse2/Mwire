@@ -82,12 +82,12 @@ public class SettingsActivity extends ThemeActivity implements SRJAdapter.ItemCa
                         R.drawable.ic_settings,
                         constructCategoryIntent(SettingsGeneralActivity.class)
                 ),
-                new SettingsCategory(
+                /*new SettingsCategory(
                         R.string.settings_chat_name,
                         R.string.settings_chat_name_summary,
                         R.drawable.ic_chat,
                         constructCategoryIntent(SettingsTwitchChatActivity.class)
-                ),
+                ),*/
                 new SettingsCategory(
                         R.string.settings_stream_player_name,
                         R.string.settings_stream_player_summary,
