@@ -1677,9 +1677,8 @@ public class StreamFragment extends Fragment implements Player.Listener {
                         }
 
                         list.remove(i);
-                        String[] test2 = list.stream().toArray(String[]::new);
 
-                        JSONArray array = new JSONArray(Arrays.asList(test2));
+                        JSONArray array = new JSONArray(Arrays.asList(list));
                         settings.saveJSONArray("NAMES", array);
 
                         Log.d("testing", "removed " + mChannelInfo.getDisplayName());
