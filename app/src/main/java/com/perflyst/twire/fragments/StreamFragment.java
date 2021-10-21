@@ -1672,7 +1672,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
                         list.remove(i);
 
-                        JSONArray array = new JSONArray(Arrays.asList(list));
+                        JSONArray array = new JSONArray(list);
                         settings.saveJSONArray("NAMES", array);
 
                         Log.d("testing", "removed " + mChannelInfo.getDisplayName());
@@ -1723,15 +1723,10 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
         mQualityWrapper = mQualityBottomSheet.findViewById(R.id.quality_wrapper);
         mAudioOnlySelector = mQualityBottomSheet.findViewById(R.id.audio_only_selector);
-        mChatOnlySelector = mQualityBottomSheet.findViewById(R.id.chat_only_selector);
         TextView optionsTitle = mQualityBottomSheet.findViewById(R.id.options_text);
 
         if (optionsTitle != null) {
             optionsTitle.setVisibility(View.VISIBLE);
-        }
-
-        if (vodId == null) {
-            mChatOnlySelector.setVisibility(View.VISIBLE);
         }
 
         mAudioOnlySelector.setVisibility(View.VISIBLE);
@@ -1740,11 +1735,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
             audioOnlyClicked();
         });
 
-
-        mChatOnlySelector.setOnClickListener(view -> {
-            mQualityBottomSheet.dismiss();
-            chatOnlyClicked();
-        });
     }
 
     private void initAudioOnlyView() {
@@ -1752,7 +1742,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
             audioViewVisible = true;
             mVideoView.setVisibility(View.INVISIBLE);
             mBufferingView.start();
-            //mBufferingView.setVisibility(View.GONE);
             previewInbackGround = false;
             castingTextView.setVisibility(View.VISIBLE);
             castingTextView.setText(getString(R.string.stream_audio_only_active));
@@ -1808,69 +1797,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
     private void stopAudioOnlyNoServiceCall() {
         disableAudioOnlyView();
-    }
-
-    private void chatOnlyClicked() {
-        mChatOnlySelector.setChecked(!mChatOnlySelector.isChecked());
-        if (mChatOnlySelector.isChecked()) {
-            initChatOnlyView();
-        } else {
-            disableChatOnlyView();
-        }
-    }
-
-    private void initChatOnlyView() {
-        if (!chatOnlyViewVisible) {
-            chatOnlyViewVisible = true;
-            if (isFullscreen) {
-                toggleFullscreen();
-            }
-
-            requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-            videoHeightBeforeChatOnly = mVideoWrapper.getHeight();
-            ResizeHeightAnimation heightAnimation = new ResizeHeightAnimation(mVideoWrapper, (int) getResources().getDimension(R.dimen.main_toolbar_height));
-            heightAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-            heightAnimation.setDuration(240);
-            mVideoWrapper.startAnimation(heightAnimation);
-
-            mPlayPauseWrapper.setVisibility(View.GONE);
-            mControlToolbar.setVisibility(View.GONE);
-            mToolbar.setBackgroundColor(Service.getColorAttribute(R.attr.colorPrimary, R.color.primary, requireContext()));
-
-            releasePlayer();
-            optionsMenuItem.setVisible(true);
-
-            showVideoInterface();
-            updateSelectedQuality(null);
-            hideQualities();
-        }
-    }
-
-    private void disableChatOnlyView() {
-        if (chatOnlyViewVisible) {
-            chatOnlyViewVisible = false;
-            requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-
-            ResizeHeightAnimation heightAnimation = new ResizeHeightAnimation(mVideoWrapper, videoHeightBeforeChatOnly);
-            heightAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-            heightAnimation.setDuration(240);
-            heightAnimation.setFillAfter(false);
-            mVideoWrapper.startAnimation(heightAnimation);
-
-            mControlToolbar.setVisibility(View.VISIBLE);
-            mPlayPauseWrapper.setVisibility(View.VISIBLE);
-            mToolbar.setBackgroundColor(Service.getColorAttribute(R.attr.streamToolbarColor, R.color.black_transparent, requireActivity()));
-
-            if (!castingViewVisible) {
-                initializePlayer();
-                startStreamWithQuality(settings.getPrefStreamQuality());
-            }
-
-            optionsMenuItem.setVisible(false);
-
-            showVideoInterface();
-        }
     }
 
     public void prePictureInPicture() {
