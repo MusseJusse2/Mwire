@@ -84,7 +84,6 @@ import com.perflyst.twire.activities.ChannelActivity;
 import com.perflyst.twire.activities.stream.StreamActivity;
 import com.perflyst.twire.adapters.PanelAdapter;
 import com.perflyst.twire.chat.ChatManager;
-import com.perflyst.twire.misc.ResizeHeightAnimation;
 import com.perflyst.twire.misc.ResizeWidthAnimation;
 import com.perflyst.twire.model.ChannelInfo;
 import com.perflyst.twire.model.Quality;
@@ -105,7 +104,6 @@ import org.json.JSONException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -1354,10 +1352,8 @@ public class StreamFragment extends Fragment implements Player.Listener {
                 player.seekToDefaultPosition(); // Go forward to live
             }
 
-            player.play();
-        } else {
-            player.play();
         }
+        player.play();
 
         keepScreenOn();
     }
@@ -1600,7 +1596,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
     private void setQualityOnClick(final TextView qualityView, String quality) {
         qualityView.setOnClickListener(v -> {
             // don´t set audio only mode as default
-            if (quality != "audio_only") {
+            if (!quality.equals("audio_only")) {
                 settings.setPrefStreamQuality(quality);
             }
             // don`t allow to change the Quality when using audio only Mode
