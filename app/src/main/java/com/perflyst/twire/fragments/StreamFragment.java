@@ -1004,6 +1004,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
             mVideoWrapper.setOnTouchListener(touchListener);
             mClickInterceptor.setOnTouchListener(touchListener);
             mClickInterceptor.setOnLongClickListener(v -> {
+                Snackbar.make(v, "toggled", Snackbar.LENGTH_SHORT).show();
                 toggleLock();
                 return false;
             });
@@ -1011,12 +1012,12 @@ public class StreamFragment extends Fragment implements Player.Listener {
     }
 
     private void toggleLock() {
-        if (isLocked) {
+        if (!isLocked) {
             mVideoInterface.setVisibility(View.GONE);
-            isLocked = false;
+            isLocked = true;
         } else {
             mVideoInterface.setVisibility(View.VISIBLE);
-            isLocked = true;
+            isLocked = false;
         }
     }
 
