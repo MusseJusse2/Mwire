@@ -82,6 +82,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.perflyst.twire.R;
 import com.perflyst.twire.activities.ChannelActivity;
+import com.perflyst.twire.activities.main.MainActivity;
 import com.perflyst.twire.activities.stream.StreamActivity;
 import com.perflyst.twire.adapters.PanelAdapter;
 import com.perflyst.twire.chat.ChatManager;
@@ -129,6 +130,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
     public StreamFragmentListener streamFragmentCallback;
     public boolean chatOnlyViewVisible = false;
     public boolean isFullscreen = false;
+    public boolean isLocked = false;
     private boolean castingViewVisible = false,
             audioViewVisible = false,
             autoPlay = true,
@@ -1001,6 +1003,21 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
             mVideoWrapper.setOnTouchListener(touchListener);
             mClickInterceptor.setOnTouchListener(touchListener);
+            mClickInterceptor.setOnLongClickListener(v -> {
+                Snackbar.make(v, "toggled", Snackbar.LENGTH_SHORT).show();
+                toggleLock();
+                return false;
+            });
+        }
+    }
+
+    private void toggleLock() {
+        if (!isLocked) {
+            mVideoInterface.setVisibility(View.GONE);
+            isLocked = true;
+        } else {
+            mVideoInterface.setVisibility(View.VISIBLE);
+            isLocked = false;
         }
     }
 
