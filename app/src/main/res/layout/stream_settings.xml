@@ -30,14 +30,14 @@
                 android:text="@string/audio_only"
                 android:visibility="gone" />
 
-            <CheckedTextView
+            <!--<CheckedTextView
                 android:id="@+id/chat_only_selector"
                 style="@style/stream_settings_item"
                 android:background="?attr/selectableItemBackground"
                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:gravity="center_vertical"
                 android:text="@string/chat_only"
-                android:visibility="gone" />
+                android:visibility="gone" />-->
 
             <LinearLayout
                 android:id="@+id/quality_wrapper"

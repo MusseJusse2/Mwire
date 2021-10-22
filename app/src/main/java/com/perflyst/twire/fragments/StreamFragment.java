@@ -16,15 +16,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.transition.Transition;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.DisplayCutout;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -86,8 +85,6 @@ import com.perflyst.twire.activities.ChannelActivity;
 import com.perflyst.twire.activities.stream.StreamActivity;
 import com.perflyst.twire.adapters.PanelAdapter;
 import com.perflyst.twire.chat.ChatManager;
-import com.perflyst.twire.misc.FollowHandler;
-import com.perflyst.twire.misc.ResizeHeightAnimation;
 import com.perflyst.twire.misc.ResizeWidthAnimation;
 import com.perflyst.twire.model.ChannelInfo;
 import com.perflyst.twire.model.Quality;
@@ -105,19 +102,15 @@ import com.rey.material.widget.ProgressView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class StreamFragment extends Fragment implements Player.Listener {
@@ -170,9 +163,8 @@ public class StreamFragment extends Fragment implements Player.Listener {
     private Snackbar snackbar;
     private ProgressView mBufferingView;
     private BottomSheetDialog mQualityBottomSheet, mProfileBottomSheet;
-    private CheckedTextView mAudioOnlySelector, mChatOnlySelector;
+    private CheckedTextView mAudioOnlySelector;
     private ViewGroup rootView;
-    private MenuItem optionsMenuItem;
     private LinearLayout mQualityWrapper;
     private View mClickInterceptor;
     private final Runnable hideAnimationRunnable = () -> {
@@ -228,8 +220,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
     private int originalCtrlToolbarPadding,
             originalMainToolbarPadding,
             vodLength = 0,
-            currentProgress = 0,
-            videoHeightBeforeChatOnly;
+            currentProgress = 0;
     private Integer triesForNextBest = 0;
     private boolean pictureInPictureEnabled; // Tracks if PIP is enabled including the animation.
     private MediaSessionCompat mediaSession;
@@ -915,7 +906,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        optionsMenuItem = menu.findItem(R.id.menu_item_options);
+        MenuItem optionsMenuItem = menu.findItem(R.id.menu_item_options);
         optionsMenuItem.setVisible(false);
         optionsMenuItem.setOnMenuItemClickListener(menuItem -> {
             if (mQualityButton != null) {
@@ -1360,10 +1351,8 @@ public class StreamFragment extends Fragment implements Player.Listener {
                 player.seekToDefaultPosition(); // Go forward to live
             }
 
-            player.play();
-        } else {
-            player.play();
         }
+        player.play();
 
         keepScreenOn();
     }
@@ -1606,7 +1595,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
     private void setQualityOnClick(final TextView qualityView, String quality) {
         qualityView.setOnClickListener(v -> {
             // don´t set audio only mode as default
-            if (quality != "audio_only") {
+            if (!quality.equals("audio_only")) {
                 settings.setPrefStreamQuality(quality);
             }
             // don`t allow to change the Quality when using audio only Mode
@@ -1663,7 +1652,12 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
         updateFollowIcon(imageView, false);
 
+        View mainView = ((StreamActivity) getActivity()).getMainContentLayout();
+
+        mainView.setHapticFeedbackEnabled(true);
+
         imageView.setOnClickListener(view -> {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
             try {
                 Boolean favourite2 = false;
                 JSONArray test = settings.loadJSONArray("NAMES");
@@ -1677,9 +1671,8 @@ public class StreamFragment extends Fragment implements Player.Listener {
                         }
 
                         list.remove(i);
-                        String[] test2 = list.stream().toArray(String[]::new);
 
-                        JSONArray array = new JSONArray(Arrays.asList(test2));
+                        JSONArray array = new JSONArray(list);
                         settings.saveJSONArray("NAMES", array);
 
                         Log.d("testing", "removed " + mChannelInfo.getDisplayName());
@@ -1730,15 +1723,10 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
         mQualityWrapper = mQualityBottomSheet.findViewById(R.id.quality_wrapper);
         mAudioOnlySelector = mQualityBottomSheet.findViewById(R.id.audio_only_selector);
-        mChatOnlySelector = mQualityBottomSheet.findViewById(R.id.chat_only_selector);
         TextView optionsTitle = mQualityBottomSheet.findViewById(R.id.options_text);
 
         if (optionsTitle != null) {
             optionsTitle.setVisibility(View.VISIBLE);
-        }
-
-        if (vodId == null) {
-            mChatOnlySelector.setVisibility(View.VISIBLE);
         }
 
         mAudioOnlySelector.setVisibility(View.VISIBLE);
@@ -1747,11 +1735,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
             audioOnlyClicked();
         });
 
-
-        mChatOnlySelector.setOnClickListener(view -> {
-            mQualityBottomSheet.dismiss();
-            chatOnlyClicked();
-        });
     }
 
     private void initAudioOnlyView() {
@@ -1759,7 +1742,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
             audioViewVisible = true;
             mVideoView.setVisibility(View.INVISIBLE);
             mBufferingView.start();
-            //mBufferingView.setVisibility(View.GONE);
             previewInbackGround = false;
             castingTextView.setVisibility(View.VISIBLE);
             castingTextView.setText(getString(R.string.stream_audio_only_active));
@@ -1811,73 +1793,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
         // resume the stream
         resumeStream();
-    }
-
-    private void stopAudioOnlyNoServiceCall() {
-        disableAudioOnlyView();
-    }
-
-    private void chatOnlyClicked() {
-        mChatOnlySelector.setChecked(!mChatOnlySelector.isChecked());
-        if (mChatOnlySelector.isChecked()) {
-            initChatOnlyView();
-        } else {
-            disableChatOnlyView();
-        }
-    }
-
-    private void initChatOnlyView() {
-        if (!chatOnlyViewVisible) {
-            chatOnlyViewVisible = true;
-            if (isFullscreen) {
-                toggleFullscreen();
-            }
-
-            requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-            videoHeightBeforeChatOnly = mVideoWrapper.getHeight();
-            ResizeHeightAnimation heightAnimation = new ResizeHeightAnimation(mVideoWrapper, (int) getResources().getDimension(R.dimen.main_toolbar_height));
-            heightAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-            heightAnimation.setDuration(240);
-            mVideoWrapper.startAnimation(heightAnimation);
-
-            mPlayPauseWrapper.setVisibility(View.GONE);
-            mControlToolbar.setVisibility(View.GONE);
-            mToolbar.setBackgroundColor(Service.getColorAttribute(R.attr.colorPrimary, R.color.primary, requireContext()));
-
-            releasePlayer();
-            optionsMenuItem.setVisible(true);
-
-            showVideoInterface();
-            updateSelectedQuality(null);
-            hideQualities();
-        }
-    }
-
-    private void disableChatOnlyView() {
-        if (chatOnlyViewVisible) {
-            chatOnlyViewVisible = false;
-            requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-
-            ResizeHeightAnimation heightAnimation = new ResizeHeightAnimation(mVideoWrapper, videoHeightBeforeChatOnly);
-            heightAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-            heightAnimation.setDuration(240);
-            heightAnimation.setFillAfter(false);
-            mVideoWrapper.startAnimation(heightAnimation);
-
-            mControlToolbar.setVisibility(View.VISIBLE);
-            mPlayPauseWrapper.setVisibility(View.VISIBLE);
-            mToolbar.setBackgroundColor(Service.getColorAttribute(R.attr.streamToolbarColor, R.color.black_transparent, requireActivity()));
-
-            if (!castingViewVisible) {
-                initializePlayer();
-                startStreamWithQuality(settings.getPrefStreamQuality());
-            }
-
-            optionsMenuItem.setVisible(false);
-
-            showVideoInterface();
-        }
     }
 
     public void prePictureInPicture() {
