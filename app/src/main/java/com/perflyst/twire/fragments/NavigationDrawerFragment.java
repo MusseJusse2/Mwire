@@ -30,8 +30,6 @@ import com.perflyst.twire.activities.main.FeaturedStreamsActivity;
 import com.perflyst.twire.activities.main.MainActivity;
 import com.perflyst.twire.activities.main.MyChannelsActivity;
 import com.perflyst.twire.activities.main.MyStreamsActivity;
-import com.perflyst.twire.activities.main.TopGamesActivity;
-import com.perflyst.twire.activities.main.TopStreamsActivity;
 import com.perflyst.twire.activities.settings.SettingsActivity;
 import com.perflyst.twire.activities.settings.SettingsGeneralActivity;
 import com.perflyst.twire.activities.setup.LoginActivity;
@@ -48,7 +46,6 @@ import butterknife.ButterKnife;
 public class NavigationDrawerFragment extends Fragment {
 
 
-    private final String LOG_TAG = getClass().getSimpleName();
     @BindView(R.id.streams_count)
     protected TextView mStreamsCount;
     @BindView(R.id.streams_count_wrapper)
@@ -63,7 +60,7 @@ public class NavigationDrawerFragment extends Fragment {
     protected ImageView mAppIcon;
     @BindView(R.id.img_drawer_banner)
     protected ImageView mTopImage;
-    @BindViews({R.id.my_streams_container, R.id.my_channels_container})
+    @BindViews({R.id.featured_streams_container, R.id.my_streams_container, R.id.my_channels_container})
     List<View> mUserRequiredViews;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
