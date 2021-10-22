@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,7 +71,6 @@ public class LiveStreamActivity extends StreamActivity {
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         if (savedInstance == null) {
-            FragmentManager fm = getSupportFragmentManager();
 
             if (mMentionRecyclerView == null) {
                 mMentionContainer = findViewById(R.id.mention_container);
@@ -124,19 +122,7 @@ public class LiveStreamActivity extends StreamActivity {
             public void onGlobalLayout() {
                 mMentionContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 //ToDo: Check height of container and adjust if necessary
-                float maxHeight = getResources().getDimension(R.dimen.chat_mention_suggestions_max_height);
                 float currentHeight = mMentionContainer.getHeight();
-
-/*
-                if (maxHeight < currentHeight) {
-                    mMentionContainer.setLayoutParams(new RelativeLayout.LayoutParams(
-                            mMentionContainer.getLayoutParams().width,
-                            (int) maxHeight
-                    ));
-
-                    currentHeight = maxHeight;
-                }
-*/
 
                 mMentionContainer.setY(inputRect.top - inputRect.height() - (int) currentHeight);
             }
