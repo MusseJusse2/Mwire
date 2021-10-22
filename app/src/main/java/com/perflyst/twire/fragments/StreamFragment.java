@@ -1032,28 +1032,6 @@ public class StreamFragment extends Fragment implements Player.Listener {
         return (int) (getScreenRect(getActivity()).height() * (settings.getChatLandscapeWidth() / 100.0));
     }
 
-    private void initCastingView() {
-        castingViewVisible = true;
-        //auto.setVisibility(View.GONE); // Auto does not work on chromecast
-        mVideoView.setVisibility(View.INVISIBLE);
-        mBufferingView.setVisibility(View.GONE);
-        previewInbackGround = false;
-        castingTextView.setVisibility(View.VISIBLE);
-        //castingTextView.setText(getString(R.string.stream_chromecast_connecting));
-        showVideoInterface();
-    }
-
-    private void disableCastingView() {
-        castingViewVisible = false;
-        //auto.setVisibility(View.VISIBLE);
-        mVideoView.setVisibility(View.VISIBLE);
-        Service.bringToBack(mPreview);
-        mBufferingView.setVisibility(View.VISIBLE);
-        previewInbackGround = true;
-        castingTextView.setVisibility(View.INVISIBLE);
-        showVideoInterface();
-    }
-
     /**
      * Checks if the activity was started with a shared view in high API levels.
      */
