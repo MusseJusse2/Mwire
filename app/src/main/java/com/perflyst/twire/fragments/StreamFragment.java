@@ -23,6 +23,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.DisplayCutout;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -1651,7 +1652,12 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
         updateFollowIcon(imageView, false);
 
+        View mainView = ((StreamActivity) getActivity()).getMainContentLayout();
+
+        mainView.setHapticFeedbackEnabled(true);
+
         imageView.setOnClickListener(view -> {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
             try {
                 Boolean favourite2 = false;
                 JSONArray test = settings.loadJSONArray("NAMES");

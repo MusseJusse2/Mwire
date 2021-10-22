@@ -18,7 +18,6 @@ import org.json.JSONException;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by SebastianRask on 29-04-2015.
@@ -72,7 +71,6 @@ public class Settings {
     private final String NOTIFY_LIVE = "notifyUserLive";
     private final String LAST_START_UP_VERSION_CODE = "lastStartUpVersionCode";
     private final String SHOW_CHANGELOGS = "showChangelogs";
-    private final JSONArray jsonNAMES = new JSONArray();
 
     private final Context context;
 
