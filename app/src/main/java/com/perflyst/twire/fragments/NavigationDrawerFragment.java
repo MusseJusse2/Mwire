@@ -63,7 +63,7 @@ public class NavigationDrawerFragment extends Fragment {
     protected ImageView mAppIcon;
     @BindView(R.id.img_drawer_banner)
     protected ImageView mTopImage;
-    @BindViews({R.id.my_streams_container, R.id.my_channels_container})
+    @BindViews({R.id.featured_streams_container, R.id.my_streams_container, R.id.my_channels_container})
     List<View> mUserRequiredViews;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
