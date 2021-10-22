@@ -1003,11 +1003,7 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
             mVideoWrapper.setOnTouchListener(touchListener);
             mClickInterceptor.setOnTouchListener(touchListener);
-            mClickInterceptor.setOnLongClickListener(v -> {
-                Snackbar.make(v, "toggled", Snackbar.LENGTH_SHORT).show();
-                toggleLock();
-                return false;
-            });
+            mClickInterceptor.setOnLongClickListener(this::onLongClick);
         }
     }
 
@@ -1867,6 +1863,12 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
     private void hideQualities() {
         mQualityWrapper.setVisibility(View.GONE);
+    }
+
+    private boolean onLongClick(View v) {
+        toggleLock();
+        Snackbar.make(v, "locked " + isLocked, Snackbar.LENGTH_SHORT).show();
+        return false;
     }
 
     public interface StreamFragmentListener {
