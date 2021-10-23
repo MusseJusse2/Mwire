@@ -1867,7 +1867,12 @@ public class StreamFragment extends Fragment implements Player.Listener {
 
     private boolean onLongClick(View v) {
         toggleLock();
-        Snackbar.make(v, "locked " + isLocked, Snackbar.LENGTH_SHORT).show();
+
+        View mainView = ((StreamActivity) getActivity()).getMainContentLayout();
+
+        mainView.setHapticFeedbackEnabled(true);
+
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
         return false;
     }
 
